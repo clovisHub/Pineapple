@@ -17,13 +17,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.admin.pineapple.applevel.AppPineapple;
 import com.example.admin.pineapple.view.MapsActivity;
+import com.example.admin.pineapple.viewmodel.ViewModelMapRecycler;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     Button btnGo;
 
 
     Double latitude, longitude;
+
+    @Inject
+    ViewModelMapRecycler you;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnGo = (Button) findViewById(R.id.btn_goId);
         btnGo.setOnClickListener(this);
 
+        ((AppPineapple) this.getApplicationContext()).getAppComponent().inject(this);
+
     }
 
 
 
     @Override
     public void onClick(View view) {
+        //ViewModelMapRecycler you = new ViewModelMapRecycler(getApplicationContext());
+        you.fetchEvents();
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
     }

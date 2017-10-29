@@ -41,10 +41,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-      //  Intent intent = getIntent();
-      //  latitude = intent.getDoubleExtra("lat", 0);
-      //   longitude = intent.getDoubleExtra("longit", 0);
-
     }
 
     @Override
@@ -77,6 +73,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longitude = location.getLongitude();
 
                 LatLng atlanta = new LatLng(latitude,longitude);
+
+                // Add a marker in Sydney and move the camera
                 mMap.addMarker(new MarkerOptions()
                         .position(atlanta)
                         .title("Your location"))
@@ -103,12 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         };
 
-        //sdk version < 23 version
-        if(Build.VERSION.SDK_INT < 23){
-
-            //  locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,15,0,locationListener);
-        }
-        else{
+        //sdk version >= 23 version
+        if(Build.VERSION.SDK_INT >= 23){
 
             if(ContextCompat.checkSelfPermission
                     (this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
@@ -122,6 +116,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }
+        else{
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5,0,locationListener);
+        }
+
+
 
     }
     @Override
@@ -132,7 +132,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         //Setmap type
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-        // Add a marker in Sydney and move the camera
+
 
 
         /*
