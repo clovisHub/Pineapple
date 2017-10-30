@@ -61,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+
     public void userLocation(){
 
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);

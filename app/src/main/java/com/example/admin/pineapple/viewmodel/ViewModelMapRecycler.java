@@ -1,6 +1,7 @@
 package com.example.admin.pineapple.viewmodel;
 
 import android.content.Context;
+import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -26,6 +27,10 @@ public class ViewModelMapRecycler extends Observable{
     @Inject
     public ViewModelMapRecycler(Context context){
         ((AppPineapple) context.getApplicationContext()).getAppComponent().inject(this);
+    }
+
+    public void fetchObservableEvents(){
+        apiService.getEventLocation("concert","33,-84","10","distance","true");
     }
 
     public void fetchEvents(){
