@@ -10,9 +10,14 @@ import com.example.admin.pineapple.data.api.ApiService;
 import com.example.admin.pineapple.model.Example;
 
 import java.util.Observable;
+import java.util.Observer;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,11 +31,27 @@ public class ViewModelMapRecycler extends Observable{
 
     @Inject
     public ViewModelMapRecycler(Context context){
-        ((AppPineapple) context.getApplicationContext()).getAppComponent().inject(this);
+        ((AppPineapple) context).getAppComponent().inject(this);
     }
 
     public void fetchObservableEvents(){
-        apiService.getEventLocation("concert","33,-84","10","distance","true");
+
+        Disposable disposable = apiService.getEventLocation("concert","33,-84","10","distance","true")
+                                             .subscribeOn(Schedulers.io())
+                                             .observeOn(AndroidSchedulers.mainThread())
+                                             .subscribe(new Consumer<Example>() {
+                                                 @Override
+                                                 public void accept(Example example) throws Exception {
+
+                                                     Log.d("ObservationA", "accept: " + example.getResults().get(0).getAssetDescriptions().get(0).getDescription().toString());
+
+                                                 }
+                                             }, new Consumer<Throwable>() {
+                                                 @Override
+                                                 public void accept(Throwable throwable) throws Exception {
+                                                     Log.d("ObserveError", "accept: an error  happened");
+                                                 }
+                                             });
     }
 
     public void fetchEvents(){

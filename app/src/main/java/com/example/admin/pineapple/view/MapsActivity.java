@@ -134,8 +134,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Setmap type
         mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
-
-
         /*
         LatLng sydney = new LatLng();
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));

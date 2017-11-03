@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @Override
     public void onClick(View view) {
         //ViewModelMapRecycler you = new ViewModelMapRecycler(getApplicationContext());
-        you.fetchEvents();
+        // you.fetchEvents();
+        you.fetchObservableEvents();
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
     }
