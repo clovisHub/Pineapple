@@ -15,6 +15,7 @@ import java.util.Observer;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -28,6 +29,8 @@ public class ViewModelMapRecycler extends Observable{
 
     @Inject
     ApiService apiService;
+
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public ViewModelMapRecycler(Context context){
@@ -52,6 +55,9 @@ public class ViewModelMapRecycler extends Observable{
                                                      Log.d("ObserveError", "accept: an error  happened");
                                                  }
                                              });
+
+        compositeDisposable.add(disposable);
+
     }
 
     public void fetchEvents(){
