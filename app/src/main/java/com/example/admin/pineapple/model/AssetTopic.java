@@ -6,15 +6,15 @@ import com.squareup.moshi.Json;
 public class AssetTopic {
 
     @Json(name = "sequence")
-    private Integer sequence;
+    private String sequence;
     @Json(name = "topic")
     private Topic topic;
 
-    public Integer getSequence() {
+    public String getSequence() {
         return sequence;
     }
 
-    public void setSequence(Integer sequence) {
+    public void setSequence(String sequence) {
         this.sequence = sequence;
     }
 

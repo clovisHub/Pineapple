@@ -6,15 +6,15 @@ import com.squareup.moshi.Json;
 public class Dma {
 
     @Json(name = "dmaId")
-    private Integer dmaId;
+    private String dmaId;
     @Json(name = "dmaName")
     private String dmaName;
 
-    public Integer getDmaId() {
+    public String getDmaId() {
         return dmaId;
     }
 
-    public void setDmaId(Integer dmaId) {
+    public void setDmaId(String dmaId) {
         this.dmaId = dmaId;
     }
 

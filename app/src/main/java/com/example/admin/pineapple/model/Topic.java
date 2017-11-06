@@ -6,17 +6,17 @@ import com.squareup.moshi.Json;
 public class Topic {
 
     @Json(name = "topicId")
-    private Integer topicId;
+    private String topicId;
     @Json(name = "topicName")
     private String topicName;
     @Json(name = "topicTaxonomy")
     private String topicTaxonomy;
 
-    public Integer getTopicId() {
+    public String getTopicId() {
         return topicId;
     }
 
-    public void setTopicId(Integer topicId) {
+    public void setTopicId(String topicId) {
         this.topicId = topicId;
     }
 

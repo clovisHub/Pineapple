@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Inject
-    ViewModelMapRecycler you;
+    ViewModelMapRecycler viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //if the user is confirmed show the google map
                 if(FingerprintHandler.isAuthentik()==true){
-                    you.fetchObservableEvents();
+                   // you.fetchObservableEvents();
                     Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                     startActivity(intent);
                 }
@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         //ViewModelMapRecycler you = new ViewModelMapRecycler(getApplicationContext());
-        // you.fetchEvents();
-        you.fetchObservableEvents();
+        //viewModel.fetchEvents("33.7,-84");
+        //viewModel.fetchObservableEvents("33.7,-94");
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
     }

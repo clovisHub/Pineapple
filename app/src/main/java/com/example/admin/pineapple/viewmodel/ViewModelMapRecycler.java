@@ -8,7 +8,10 @@ import android.util.Log;
 import com.example.admin.pineapple.applevel.AppPineapple;
 import com.example.admin.pineapple.data.api.ApiService;
 import com.example.admin.pineapple.model.Example;
+import com.example.admin.pineapple.model.Result;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -32,27 +35,48 @@ public class ViewModelMapRecycler extends Observable{
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    static List<Result> results = new ArrayList<>();
+
     @Inject
     public ViewModelMapRecycler(Context context){
         ((AppPineapple) context).getAppComponent().inject(this);
     }
 
-    public void fetchObservableEvents(){
+    public static List<Result> getResults(){
+        return results;
+    }
 
-        Disposable disposable = apiService.getEventLocation("concert","33,-84","10","distance","true")
+    public void fetchObservableEvents(String coordinates){
+        
+        //String check = coordinates;
+
+        Disposable disposable = apiService.getEventLocation("concert",coordinates,"10","distance","true")
                                              .subscribeOn(Schedulers.io())
                                              .observeOn(AndroidSchedulers.mainThread())
                                              .subscribe(new Consumer<Example>() {
                                                  @Override
                                                  public void accept(Example example) throws Exception {
 
-                                                     Log.d("ObservationA", "accept: " + example.getResults().get(0).getAssetDescriptions().get(0).getDescription().toString());
+                                                     Log.d("ObservationA", "accept: " + example.getResults().get(0).getPlace().getCityName());
+                                                     Log.d("ObservationB", "accept: " + example.getResults().size());
+                                                     int i = 0;
+                                                     for (Result obj:example.getResults()) {
+                                                         
+                                                         Log.d("ObservationC"+i, "accept: " + example.getResults().get(i).getPlace().getLatitude());
 
+                                                         Log.d("ObservationD"+i, "accept: " + example.getResults().get(i).getPlace().getLongitude());
+                                                         
+                                                         Log.d("ObservationE"+i, "accept: " + example.getResults().get(i).getPlace().getPostalCode());
+                                                         i++;
+                                                         results.add(obj);
+
+                                                     }
                                                  }
                                              }, new Consumer<Throwable>() {
                                                  @Override
                                                  public void accept(Throwable throwable) throws Exception {
-                                                     Log.d("ObserveError", "accept: an error  happened");
+                                                     Log.d("ObserveError", "accept: an error  happened"+
+                                                             throwable.getMessage());
                                                  }
                                              });
 
@@ -60,16 +84,30 @@ public class ViewModelMapRecycler extends Observable{
 
     }
 
-    public void fetchEvents(){
-       apiService.getLocationCallable("concert","33, -84","5","distance","true")
+    public void fetchEvents(String coordinates){
+       apiService.getLocationCallable("concert","33.7,-84","5","distance", "true")
                   .enqueue(new Callback<Example>() {
                       @Override
                       public void onResponse(Call<Example> call, Response<Example> response) {
 
                           if(response.isSuccessful()){
 
-                              Log.d("yourself",response.body().getResults().get(1).getAssetDescriptions().get(0).getDescription().toString());
-                              Log.d("youme",response.body().getResults().get(1).getActivityStartDate().toString());
+                             //Log.d("callableA",response.body().getResults().get(1).getAssetDescriptions().get(0).getDescription().toString());
+                             // Log.d("callableB",Integer.toString(response.body().getResults().size()));
+
+                              int i = 0;
+
+                              for (Result obj:response.body().getResults()) {
+
+                                    Log.d("ObservationC"+i, "accept: " + response.body().getResults().get(i).getPlace().getLatitude());
+
+                                    Log.d("ObservationD"+i, "accept: " + response.body().getResults().get(i).getPlace().getLongitude());
+
+                                    Log.d("ObservationE"+i, "accept: " + response.body().getResults().get(i).getPlace().getPostalCode());
+
+                                    i++;
+                                    results.add(obj);
+                              }
                           }
 
                       }

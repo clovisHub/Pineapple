@@ -16,6 +16,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.example.admin.pineapple.R;
+import com.example.admin.pineapple.applevel.AppPineapple;
+import com.example.admin.pineapple.model.Result;
+import com.example.admin.pineapple.viewmodel.ViewModelMapRecycler;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,7 +26,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -31,6 +39,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Double latitude, longitude;
     LocationManager locationManager;
     LocationListener locationListener;
+    LatLng atlanta;
+    Marker [] markers;
+    private List<Result> locations;
+
+    @Inject
+    ViewModelMapRecycler vModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        ((AppPineapple) this.getApplicationContext()).getAppComponent().inject(this);
     }
 
     @Override
@@ -52,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 if(ContextCompat.checkSelfPermission
                         (this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10,0,locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
 
                 }
 
@@ -72,15 +86,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
+                String coordinates = latitude+","+longitude;
 
-                LatLng atlanta = new LatLng(latitude,longitude);
+                vModel.fetchObservableEvents(coordinates);
+
+
+                atlanta = new LatLng(latitude,longitude);
 
                 // Add a marker in Sydney and move the camera
                 mMap.addMarker(new MarkerOptions()
                         .position(atlanta)
                         .title("Your location"))
                         .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta,5));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta,8));
+
+                 String latlong = latitude+","+longitude;
+                vModel.fetchObservableEvents(latlong);
+
+                 locations = vModel.getResults();
+                 markers = new Marker[locations.size()];
+                 LatLng []atl = new LatLng[locations.size()];
+
+                for (int i = 0; i<locations.size(); i++) { //33.7,-94
+
+                    atl[i] = new LatLng(Double.parseDouble(locations.get(i).getPlace().getGeoPoint().getLat())
+                                       ,Double.parseDouble(locations.get(i).getPlace().getGeoPoint().getLon()));
+
+                    markers[i] = mMap.addMarker(new MarkerOptions()
+                        .position(atl[i]));
+
+                    markers[i].setVisible(true);
+
+                }
 
                 Log.i("Location",location.toString());
             }
@@ -113,7 +150,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             else{
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
-
             }
 
         }
@@ -121,8 +157,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5,0,locationListener);
         }
-
-
 
     }
     @Override
@@ -132,8 +166,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = googleMap;
         //Setmap type
-        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-
+        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         /*
         LatLng sydney = new LatLng();
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
