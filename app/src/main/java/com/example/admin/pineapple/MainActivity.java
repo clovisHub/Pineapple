@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void goToMap(){
-
         //ViewModelRecycler you = new ViewModelRecycler(getApplicationContext());
         //viewModel.fetchEvents("33.7,-84");
         //viewModel.fetchObservableEvents("33.7,-94");

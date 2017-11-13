@@ -22,8 +22,8 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
         this.resultsList = Collections.emptyList();
     }
 
-    public void setPeopleList(List<Result> peopleList) {
-        this.resultsList = peopleList;
+    public void setResultsList(List<Result> resultList) {
+        this.resultsList = resultList;
         notifyDataSetChanged();
     }
 
