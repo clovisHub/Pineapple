@@ -1,48 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.admin.pineapple.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <Button
-        android:id="@+id/btn_goId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="@string/go" />
-    <LinearLayout
-        android:layout_below="@+id/btn_goId"
-        android:layout_marginTop="10dp"
+    <data>
+        <variable name="mainActive" type="com.example.admin.pineapple.MainActivity" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <ImageView
-            android:id="@+id/img_finger"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_gravity="center"
-            android:src="@drawable/fingerprint3"/>
-        <TextView
-            android:id="@+id/tv_oneTouchId"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:textSize="20dp"
+        android:layout_height="match_parent"
+        tools:context="com.example.admin.pineapple.MainActivity">
+
+        <Button
+            android:id="@+id/btn_goId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="104dp"
+            android:onClick="@{()->mainActive::goToMap}"
+            android:text="@string/go" />
+
+        <LinearLayout
+            android:layout_below="@+id/btn_goId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_fingerprint"/>
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/img_finger"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/fingerprint3"/>
+            <TextView
+                android:id="@+id/tv_oneTouchId"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_fingerprint"/>
 
-        <TextView
-            android:id="@+id/tv_descId"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/desc_fingerprint"/>
+            <TextView
+                android:id="@+id/tv_descId"
+                android:gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/desc_fingerprint"/>
 
 
-    </LinearLayout>
-</RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</layout>

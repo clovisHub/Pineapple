@@ -1,14 +1,17 @@
 package com.example.admin.pineapple.viewmodel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.example.admin.pineapple.MainActivity;
 import com.example.admin.pineapple.applevel.AppPineapple;
 import com.example.admin.pineapple.data.api.ApiService;
 import com.example.admin.pineapple.model.Example;
 import com.example.admin.pineapple.model.Result;
+import com.example.admin.pineapple.view.MapsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +31,17 @@ import retrofit2.Response;
 
 import static java.security.AccessController.getContext;
 
-public class ViewModelMapRecycler extends Observable{
+public class ViewModelRecycler extends Observable{
 
     @Inject
     ApiService apiService;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    static List<Result> results = new ArrayList<>();
+    private static List<Result> results = new ArrayList<>();
 
     @Inject
-    public ViewModelMapRecycler(Context context){
+    public ViewModelRecycler(Context context){
         ((AppPineapple) context).getAppComponent().inject(this);
     }
 
@@ -59,7 +62,7 @@ public class ViewModelMapRecycler extends Observable{
 
                                                      Log.d("ObservationA", "accept: " + example.getResults().get(0).getPlace().getCityName());
                                                      Log.d("ObservationB", "accept: " + example.getResults().size());
-                                                     int i = 0;
+                                                    /* int i = 0;
                                                      for (Result obj:example.getResults()) {
                                                          
                                                          Log.d("ObservationC"+i, "accept: " + example.getResults().get(i).getPlace().getLatitude());
@@ -70,7 +73,9 @@ public class ViewModelMapRecycler extends Observable{
                                                          i++;
                                                          results.add(obj);
 
-                                                     }
+                                                     }*/
+                                                     changeEventDataSet(example.getResults());
+
                                                  }
                                              }, new Consumer<Throwable>() {
                                                  @Override
@@ -95,7 +100,7 @@ public class ViewModelMapRecycler extends Observable{
                              //Log.d("callableA",response.body().getResults().get(1).getAssetDescriptions().get(0).getDescription().toString());
                              // Log.d("callableB",Integer.toString(response.body().getResults().size()));
 
-                              int i = 0;
+                             /* int i = 0;
 
                               for (Result obj:response.body().getResults()) {
 
@@ -107,7 +112,9 @@ public class ViewModelMapRecycler extends Observable{
 
                                     i++;
                                     results.add(obj);
-                              }
+                              }*/
+                              changeEventDataSet(response.body().getResults());
+
                           }
 
                       }
@@ -119,6 +126,14 @@ public class ViewModelMapRecycler extends Observable{
                   });
 
     }
+
+    private void changeEventDataSet(List<Result> myResults) {
+        results.addAll(myResults);
+        setChanged();
+        notifyObservers();
+    }
+
+
 
 
 }

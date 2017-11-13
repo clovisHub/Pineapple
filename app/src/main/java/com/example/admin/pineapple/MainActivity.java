@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.hardware.fingerprint.FingerprintManager;
 
 import android.os.Build;
@@ -19,8 +20,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.admin.pineapple.applevel.AppPineapple;
+import com.example.admin.pineapple.databinding.ActivityMainBinding;
 import com.example.admin.pineapple.view.MapsActivity;
-import com.example.admin.pineapple.viewmodel.ViewModelMapRecycler;
+import com.example.admin.pineapple.viewmodel.ViewModelRecycler;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -31,6 +33,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -38,11 +42,11 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+
+public class MainActivity extends AppCompatActivity implements Observer {
+
     Button btnGo;
 
-
-    Double latitude, longitude;
     private KeyStore keyStore;
     private final String keyVal ="androidHive";
     private Cipher cipher;
@@ -50,16 +54,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Inject
-    ViewModelMapRecycler viewModel;
+    ViewModelRecycler viewModel;
+
+    ActivityMainBinding mainBiding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainBiding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
-        btnGo = (Button) findViewById(R.id.btn_goId);
-        btnGo.setOnClickListener(this);
+        //btnGo = (Button) findViewById(R.id.btn_goId);
+        //btnGo.setOnClickListener(this);
 
         ((AppPineapple) this.getApplicationContext()).getAppComponent().inject(this);
 
@@ -168,15 +174,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    public void goToMap(){
 
-    @Override
-    public void onClick(View view) {
-        //ViewModelMapRecycler you = new ViewModelMapRecycler(getApplicationContext());
+        //ViewModelRecycler you = new ViewModelRecycler(getApplicationContext());
         //viewModel.fetchEvents("33.7,-84");
         //viewModel.fetchObservableEvents("33.7,-94");
+
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
     }
 
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

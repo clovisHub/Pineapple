@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="eventsViewModel"
+            type="com.example.admin.pineapple.viewmodel.ViewModelRecycler"/>
+    </data>
+
+  <RelativeLayout
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.example.admin.pineapple.view.EventsActivity"
+      android:id="@+id/recyclerEventId"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:gravity="center"
+          android:orientation="vertical">
+
+          <android.support.v7.widget.RecyclerView
+              android:id="@+id/list_people"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:clipToPadding="false"
+              android:scrollbars="vertical"
+              tools:listitem="@layout/single_event"
+              />
+
+      </LinearLayout>
+
+  </RelativeLayout>
+
+</layout>
