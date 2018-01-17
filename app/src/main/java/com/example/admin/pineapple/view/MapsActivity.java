@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(atlanta)
                         .title("Your location"))
                         .setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta,8));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atlanta,9));
 
                  String latlong = latitude+","+longitude;
                 vModel.fetchObservableEvents(latlong);

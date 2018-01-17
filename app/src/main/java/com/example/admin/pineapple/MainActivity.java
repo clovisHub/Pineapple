@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.admin.pineapple.applevel.AppPineapple;
 import com.example.admin.pineapple.databinding.ActivityMainBinding;
@@ -43,7 +44,7 @@ import javax.crypto.SecretKey;
 import javax.inject.Inject;
 
 
-public class MainActivity extends AppCompatActivity implements Observer {
+public class MainActivity extends AppCompatActivity implements Observer, View.OnClickListener {
 
     Button btnGo;
 
@@ -63,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         super.onCreate(savedInstanceState);
         mainBiding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        btnGo = mainBiding.btnGoId;
 
-        //btnGo = (Button) findViewById(R.id.btn_goId);
-        //btnGo.setOnClickListener(this);
+        btnGo.setOnClickListener(this);
 
         ((AppPineapple) this.getApplicationContext()).getAppComponent().inject(this);
 
@@ -175,17 +176,22 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     public void goToMap(){
-        //ViewModelRecycler you = new ViewModelRecycler(getApplicationContext());
-        //viewModel.fetchEvents("33.7,-84");
-        //viewModel.fetchObservableEvents("33.7,-94");
+        ViewModelRecycler you = new ViewModelRecycler(getApplicationContext());
+        viewModel.fetchEvents("33.7,-84");
+        viewModel.fetchObservableEvents("33.7,-94");
 
+        Toast.makeText(this,"Yes",Toast.LENGTH_LONG).show();
         Intent intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
     }
 
-
     @Override
     public void update(Observable o, Object arg) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        goToMap();
     }
 }

@@ -51,11 +51,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
 
     public class EventsAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        SingleEventBinding singleEventBinding;
+        private final SingleEventBinding singleEventBinding;
 
         public EventsAdapterViewHolder(SingleEventBinding singleEv) {
-            super(singleEv.singleResultId);
-            this.singleEventBinding = singleEv;
+            super(singleEv.getRoot());
+            singleEventBinding = singleEv;
         }
 
         void bindResult(Result result) {
@@ -65,6 +65,7 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.EventsAdap
             } else {
                 singleEventBinding.getViewModelResult().setResult(result);
             }
+            singleEventBinding.executePendingBindings();
         }
     }
 }
